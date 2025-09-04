@@ -13,8 +13,8 @@ Bash project to convert addresses database from sqlite to mysql.
    ```
    chmod 755 convert.sh
    ```
-6. Download the sqlite file and put it in the project folder
-   This file is too large to store in the repo, but it can be found in the Jira.
+6. Download the sqlite file and put it in the project folder<br>
+   This file is too large to store in the repo, but it can be found in the Jira.<br>
    Note: when you make any commits make sure not to include this file
 7. Enable local_infile by adding the following lines to /etc/mysql/my.cnf
    ```
