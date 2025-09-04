@@ -13,10 +13,10 @@ Bash project to convert addresses database from sqlite to mysql.
    ```
    chmod 755 convert.sh
    ```
-6. Download the sqlite file and put it in the project folder<br>
+5. Download the sqlite file and put it in the project folder<br>
    This file is too large to store in the repo, but it can be found in the Jira.<br>
    Note: when you make any commits make sure not to include this file
-7. Enable local_infile by adding to /etc/mysql/my.cnf<br>
+6. Enable local_infile by adding to /etc/mysql/my.cnf<br>
    You need to use sudo to edit this file. I opened it with nano:
    ```
    sudo nano /etc/mysql/my.cnf
@@ -29,8 +29,8 @@ Bash project to convert addresses database from sqlite to mysql.
    [client]
    local_infile = 1
    ```
-9. Restart MySQL after step 7
+7. Restart MySQL after step 6
    ```
    sudo systemctl restart mysql
    ```
-10. Create your MySQL database by running create_mysqldb() from the script
+8. Create your MySQL database by running create_mysqldb() from the script
