@@ -27,16 +27,18 @@ EOF
 # convers sqlite to csv to mysql in sections
 convert(){
     # rows=$(sqlite3 "$sqlite_db" "SELECT COUNT(*) FROM $table;")
-    rows=50
+    rows=50 # for testing
     offset=0
 
     while [ $offset -lt $rows ]; do
-        csv_file="chunk.csv"
+        csv_file="chunk_${offset}.csv"
 
         # export chunk to csv
+        echo "Exporting chunk to csv with offset $offset"
         sqlite3 -header -csv "$sqlite_db" "SELECT * FROM $table LIMIT $chunk_size OFFSET $offset;" > "$csv_file"
 
         # import csv to mysql
+        echo "Importing csv to mysql db"
         mysql --local-infile=1 -u "$mysql_user" -p"$mysql_pass" "$mysql_db" -e "
         LOAD DATA LOCAL INFILE '$csv_file'
         INTO TABLE $table
@@ -45,9 +47,11 @@ convert(){
         IGNORE 1 ROWS;"
 
         # remove csv file
-        # rm "$csv_file"
+        echo "Removing csv file"
+        rm "$csv_file"
 
         offset=$((offset + chunk_size))
+        echo "-----"
     done
 
     # reenable indexes
