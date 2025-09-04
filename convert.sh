@@ -14,7 +14,7 @@ get_schema() {
 }
 
 # create mysql db
-# BEFORE running: manually change "US" to 'US' on line 9 of schema
+# BEFORE running: manually change "US" to 'US' on line 9 of schema (done unless you rerun get_schema)
 create_mysqldb(){
     mysql -u "$mysql_user" -p"$mysql_pass" <<EOF
     CREATE DATABASE IF NOT EXISTS $mysql_db;
