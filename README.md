@@ -33,3 +33,4 @@ Bash project to convert addresses database from sqlite to mysql.
    ```
    sudo systemctl restart mysql
    ```
+10. Create your MySQL database by running create_mysqldb() from the script
