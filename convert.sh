@@ -8,18 +8,14 @@ mysql_user="root"
 mysql_pass="student"
 chunk_size=50
 
+# get mysql schema
 get_schema() {
     sqlite3 "$SQLITE_DB" ".schema $TABLE_NAME" > "$SCHEMA_FILE"
 }
 
+# create mysql db
+# BEFORE running: manually change "US" to 'US' on line 9 of schema
 create_mysqldb(){
-    # create db
-    # mysql -u "$mysql_user" -p"$mysql_pass" -e "CREATE DATABASE IF NOT EXISTS $mysql_db;"
-    # load schema
-    # mysql -u "$mysql_user" -p"$mysql_pass" "$mysql_db" < "$schema_file"
-    # disable indexes so imports are faster
-    # mysql -u "$mysql_user" -p"$mysql_pass" "$mysql_db" -e "ALTER TABLE $table DISABLE KEYS;"
-
     mysql -u "$mysql_user" -p"$mysql_pass" <<EOF
     CREATE DATABASE IF NOT EXISTS $mysql_db;
     USE $mysql_db;
@@ -28,6 +24,7 @@ create_mysqldb(){
 EOF
 }
 
+# convers sqlite to csv to mysql in sections
 convert(){
     # rows=$(sqlite3 "$sqlite_db" "SELECT COUNT(*) FROM $table;")
     rows=50
