@@ -7,6 +7,7 @@ mysql_db="addresses"
 mysql_user="root"
 mysql_pass="student"
 chunk_size=50
+offset_log="offset.log"
 
 # get mysql schema
 get_schema() {
@@ -31,6 +32,9 @@ convert(){
     offset=0
 
     while [ $offset -lt $rows ]; do
+        # log what offset is running
+        echo "Last offset: $offset" > "$offset_log"
+
         csv_file="chunk_${offset}.csv"
 
         # export chunk to csv
@@ -53,6 +57,8 @@ convert(){
         offset=$((offset + chunk_size))
         echo "-----"
     done
+
+    echo "Finished"
 
     # reenable indexes
     mysql -u "$mysql_user" -p"$mysql_pass" "$mysql_db" -e "ALTER TABLE $table ENABLE KEYS;"
