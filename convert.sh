@@ -6,7 +6,6 @@ table="addresses"
 mysql_db="addresses"
 mysql_user="root"
 mysql_pass="student"
-chunk_size=50
 offset_log="offset.log"
 
 # get mysql schema
@@ -25,11 +24,20 @@ create_mysqldb(){
 EOF
 }
 
-# convers sqlite to csv to mysql in sections
+# convert sqlite to csv to mysql in sections
+# args
+#   $1 - offset
+#   $2 - limit
 convert(){
-    # rows=$(sqlite3 "$sqlite_db" "SELECT COUNT(*) FROM $table;")
-    rows=50 # for testing
-    offset=0
+    rows=$(sqlite3 "$sqlite_db" "SELECT COUNT(*) FROM $table;")
+    # rows=50 # for testing
+    offset=$1
+    limit=$2
+
+    # disable indexes
+    mysql -u "$mysql_user" -p"$mysql_pass" "$mysql_db" -e "ALTER TABLE $table DISABLE KEYS;"
+
+    echo "Start time: $(date +"%r")"
 
     while [ $offset -lt $rows ]; do
         # log what offset is running
@@ -39,7 +47,7 @@ convert(){
 
         # export chunk to csv
         echo "Exporting chunk to csv with offset $offset"
-        sqlite3 -header -csv "$sqlite_db" "SELECT * FROM $table LIMIT $chunk_size OFFSET $offset;" > "$csv_file"
+        sqlite3 -header -csv "$sqlite_db" "SELECT * FROM $table LIMIT $limit OFFSET $offset;" > "$csv_file"
 
         # import csv to mysql
         echo "Importing csv to mysql db"
@@ -54,15 +62,17 @@ convert(){
         echo "Removing csv file"
         rm "$csv_file"
 
-        offset=$((offset + chunk_size))
+        offset=$((offset + limit))
         echo "-----"
     done
 
     echo "Finished"
+    echo "End time: $(date +"%r")"
 
     # reenable indexes
     mysql -u "$mysql_user" -p"$mysql_pass" "$mysql_db" -e "ALTER TABLE $table ENABLE KEYS;"
 }
 
-convert
+convert 0 500000
 
+# create_mysqldb
