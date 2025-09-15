@@ -11,7 +11,7 @@ Bash project to convert addresses database from sqlite to mysql.
 3. Clone this repo
 4. Update the permissions for the script
    ```
-   chmod 755 convert.sh
+   chmod 755 import.py
    ```
 5. Download the sqlite file and put it in the project folder<br>
    This file is too large to store in the repo, but it can be found in the Jira.<br>
@@ -33,4 +33,23 @@ Bash project to convert addresses database from sqlite to mysql.
    ```
    sudo systemctl restart mysql
    ```
-8. Create your MySQL database by running create_mysqldb() from the script
+8. Set config settings
+   ```
+   sqlite_db =
+   mysql_pass =
+   ```
+9. Choose run parameters  (Comment out what isn't being used. USE FRESH START ON FIRST RUN)
+   ```
+   NORMAL MODE - optimized processing
+   convert_batches_parallel()
+    
+   For a fresh start (drops existing table):
+   convert_batches_parallel(fresh_start=True)
+    
+   To resume from a specific ZIP code:
+   convert_batches_parallel(resume_from="12345")
+    
+   Validate the results
+    validate_migration()
+    ```
+10. Sit and wait 
