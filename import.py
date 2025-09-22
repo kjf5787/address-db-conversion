@@ -150,7 +150,7 @@ def process_batch(batch):
 
     # Create temporary CSV file
     with tempfile.NamedTemporaryFile(mode="w", delete=False, newline="", encoding="utf-8", suffix=".csv") as tmpfile:
-        writer = csv.writer(tmpfile, quoting=csv.QUOTE_ALL)
+        writer = csv.writer(tmpfile, quoting=csv.QUOTE_ALL, lineterminator='\n')
         writer.writerows(rows)
         csv_file_path = tmpfile.name
 
@@ -335,4 +335,5 @@ if __name__ == "__main__":
     # convert_batches_parallel(resume_from="12345")
     
     # Validate the results
+
     validate_migration()
