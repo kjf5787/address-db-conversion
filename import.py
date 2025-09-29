@@ -48,7 +48,7 @@ def init_mysql_db(drop_existing=False):
         `zipcode` VARCHAR(6) NOT NULL,
         `number` VARCHAR(30) NOT NULL,
         `street` VARCHAR(200) NOT NULL,
-        `street2` VARCHAR(20),
+        `street2` VARCHAR(200),
         `city` VARCHAR(50) NOT NULL,
         `state` CHAR(2) NOT NULL,
         `plus4` CHAR(4),
@@ -337,3 +337,4 @@ if __name__ == "__main__":
     # Validate the results
 
     validate_migration()
+
